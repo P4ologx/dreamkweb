@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dream Book - Agendas Personalizadas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f3ff 0%, #f8f8f8 50%, #eff6ff 100%);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #2e55ff, #15e4ff);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #2e55ff, #15e4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #374151;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #2e55ff;
+        }
+
+        .cart-btn {
+            background: linear-gradient(135deg, #5171ff, #15e4ff);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .cart-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            background: linear-gradient(135deg, #2e55ff, #15e4ff, #84edff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+
+        .cta-btn {
+            background: linear-gradient(135deg, #2e55ff, #15e4ff);
+            color: rgb(255, 255, 255);
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(147, 51, 234, 0.3);
+        }
+
+        /* Products Section */
+        .products-section {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            color: #1f2937;
+            margin-bottom: 50px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .stars {
+            color: #fbbf24;
+        }
+
+        .reviews {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .product-description {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2e55ff;
+        }
+
+        .buy-btn {
+            background: linear-gradient(135deg, #2e55ff, #15e4ff);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .buy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(147, 51, 234, 0.4);
+        }
+
+        /* Features Section */
+        .features {
+            background: white;
+            padding: 60px 20px;
+            margin-top: 60px;
+        }
+
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+
+        .feature-icon.purple {
+            background: #f3e8ff;
+            color: #2e55ff;
+        }
+
+        .feature-icon.pink {
+            background: #fce7f3;
+            color: #15e4ff;
+        }
+
+        .feature-icon.blue {
+            background: #dbeafe;
+            color: #3b82f6;
+        }
+
+        .feature h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #1f2937;
+        }
+
+        .feature p {
+            color: #6b7280;
+        }
+
+        /* Cart Modal */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+        }
+
+        .cart-modal.active {
+            display: block;
+        }
+
+        .cart-content {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 400px;
+            height: 100%;
+            background: white;
+            padding: 30px;
+            overflow-y: auto;
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .cart-header h2 {
+            font-size: 24px;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 30px;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            color: #9333ea;
+            font-weight: bold;
+        }
+
+        .quantity-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .qty-btn {
+            width: 25px;
+            height: 25px;
+            background: #f3f4f6;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .remove-btn {
+            color: #ef4444;
+            font-size: 12px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7280;
+        }
+
+        .cart-total {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e7eb;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .total-row.final {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2e55ff;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #2e55ff, #15e4ff);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        /* Footer */
+        footer {
+            background: #1f2937;
+            color: white;
+            padding: 50px 20px;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .footer-section p,
+        .footer-section ul {
+            color: #9ca3af;
+            line-height: 1.8;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .cart-content {
+                width: 100%;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">DB</div>
+                <div class="logo-text">Dream Book</div>
+            </div>
+            <nav>
+                <a href="#inicio">Inicio</a>
+                <a href="#productos">Productos</a>
+                <a href="#personalizar">Personalizar</a>
+                <a href="#contacto">Contacto</a>
+            </nav>
+            <button class="cart-btn" onclick="toggleCart()">
+                🛒 Carrito
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <h1>Transforma Tus Sueños en Realidad</h1>
+        <p>Agendas personalizadas con diseños únicos que inspiran tu día a día</p>
+        <button class="cta-btn" onclick="document.getElementById('productos').scrollIntoView({behavior: 'smooth'})">
+            Explorar Colección
+        </button>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section" id="productos">
+        <h2 class="section-title">Nuestra Colección Exclusiva</h2>
+        <div class="products-grid" id="productsGrid"></div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="features-grid">
+            <div class="feature">
+                <div class="feature-icon purple">✓</div>
+                <h3>Personalización Gratuita</h3>
+                <p>Agrega tu nombre o frase favorita sin costo adicional</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon pink">✓</div>
+                <h3>Envío Rápido</h3>
+                <p>Entrega en 2-3 días hábiles a todo el país</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon blue">✓</div>
+                <h3>Calidad Premium</h3>
+                <p>Materiales de primera calidad garantizados</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cartModal" onclick="closeCartOnOutsideClick(event)">
+        <div class="cart-content" onclick="event.stopPropagation()">
+            <div class="cart-header">
+                <h2>Carrito de Compras</h2>
+                <button class="close-cart" onclick="toggleCart()">×</button>
+            </div>
+            <div id="cartItems"></div>
+            <div class="cart-total" id="cartTotal" style="display: none;">
+                <div class="total-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">S/ 0.00</span>
+                </div>
+                <div class="total-row">
+                    <span>Envío:</span>
+                    <span style="color: #10b981; font-weight: 600;">GRATIS</span>
+                </div>
+                <div class="total-row final">
+                    <span>Total:</span>
+                    <span id="total">S/ 0.00</span>
+                </div>
+                <button class="checkout-btn" onclick="window.open('checktransformers.html', '_blank')">Proceder al Pago</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Dream Book</h4>
+                <p>Agendas personalizadas que inspiran tus sueños</p>
+            </div>
+            <div class="footer-section">
+                <h4>Productos</h4>
+                <ul>
+                    <li><a href="#">Agendas Clásicas</a></li>
+                    <li><a href="#">Agendas Premium</a></li>
+                    <li><a href="#">Personalización</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Ayuda</h4>
+                <ul>
+                    <li><a href="#">Envíos</a></li>
+                    <li><a href="#">Devoluciones</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contacto</h4>
+                <p>Email: hola@dreambook.com</p>
+                <p>WhatsApp: +51 999 888 777</p>
+                <p>Lima, Perú</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Dream Book. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Datos de productos
+        const products = [
+            {
+                id: 1,
+                name: "Agenda Transformers 2026",
+                price: 49.90,
+                image: "https://img.elo7.com.br/product/zoom/3E8E8A5/agenda-escolar-transformers-1-dia-por-pagina-permanente.jpg",
+                rating: 4.8,
+                reviews: 124,
+                description: "Agenda de cuero sintético con detalles dorados, 200 páginas premium"
+                
+            },
+            {
+                id: 2,
+                name: "Agenda Spiderman 2026",
+                price: 49.90,
+                image: "https://polipapel.vteximg.com.br/arquivos/ids/200399-1000-1000/Y27503--1-.png?v=638972703528200000",
+                rating: 4.9,
+                reviews: 98,
+                description: "Diseño minimalista moderno, papel reciclado de alta calidad"
+            },
+            {
+                id: 3,
+                name: "Agenda Batman 2026",
+                price: 49.90,
+                image: "https://geeky.sfo2.cdn.digitaloceanspaces.com/geekydrop_production/CapturadePantalla2021-08-30ala_s_6.png",
+                rating: 5.0,
+                reviews: 156,
+                description: "Diseño floral exclusivo, incluye separadores y bolsillo interno"
+            },
+            {
+                id: 4,
+                name: "Agenda Alianza Lima 2026",
+                price: 49.90,
+                image: "https://i0.wp.com/anotadito.com/wp-content/uploads/2024/09/alianza-lima-m01.webp?fit=1200%2C1200&ssl=1",
+                rating: 4.7,
+                reviews: 87,
+                description: "Cuero genuino, tamaño A5, ideal para profesionales"
+            },
+            {
+                id: 5,
+                name: "Agenda Universitario 2026",
+                price: 49.90,
+                image: "https://tienda.universitario.pe/cdn/shop/files/Cuaderno-U-web-800x800px.jpg?v=1741388937",
+                rating: 4.6,
+                reviews: 203,
+                description: "Colorida y funcional, perfecta para estudiantes"
+            },
+            {
+                id: 6,
+                name: "Agenda Hello Kitty 2026",
+                price: 49.90,
+                image: "https://www.dgnottas.com/cdn/shop/files/20_4f0d0dd3-1f3e-4252-9339-f9b4d78d2e0a_1445x.png?v=1759429572",
+                rating: 4.9,
+                reviews: 142,
+                description: "Temática de viajes, incluye secciones especiales"
+            }
+        ];
+
+        let cart = [];
+
+        // Renderizar productos
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        <div class="product-rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="reviews">${product.rating} (${product.reviews} reseñas)</span>
+                        </div>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-footer">
+                            <span class="product-price">S/ ${product.price.toFixed(2)}</span>
+                            <button class="buy-btn" onclick="addToCart(${product.id})">Comprar</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Agregar al carrito
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            updateCart();
+            toggleCart();
+        }
+
+        // Actualizar carrito
+        function updateCart() {
+            const cartCount = document.getElementById('cartCount');
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="cart-empty">
+                        <div style="font-size: 60px; margin-bottom: 20px;">🛒</div>
+                        <p>Tu carrito está vacío</p>
+                    </div>
+                `;
+                cartTotal.style.display = 'none';
+            } else {
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-price">S/ ${item.price.toFixed(2)}</div>
+                            <div class="quantity-controls">
+                                <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                                <span>${item.quantity}</span>
+                                <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                                <button class="remove-btn" onclick="removeFromCart(${item.id})">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                document.getElementById('subtotal').textContent = `S/ ${total.toFixed(2)}`;
+                document.getElementById('total').textContent = `S/ ${total.toFixed(2)}`;
+                cartTotal.style.display = 'block';
+            }
+        }
+
+        // Actualizar cantidad
+        function updateQuantity(productId, delta) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    updateCart();
+                }
+            }
+        }
+
+        // Eliminar del carrito
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCart();
+        }
+
+        // Toggle carrito
+        function toggleCart() {
+            const modal = document.getElementById('cartModal');
+            modal.classList.toggle('active');
+        }
+
+        // Cerrar carrito al hacer clic fuera
+        function closeCartOnOutsideClick(event) {
+            if (event.target.id === 'cartModal') {
+                toggleCart();
+            }
+        }
+
+        // Proceder al pago
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Tu carrito está vacío');
+                return;
+            }
+            alert('¡Gracias por tu compra! Total: S/ ' + cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2));
+            cart = [];
+            updateCart();
+            toggleCart();
+        }
+
+        // Inicializar
+        renderProducts();
+        updateCart();
+    </script>
+</body>
+</html>
